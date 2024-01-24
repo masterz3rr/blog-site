@@ -61,7 +61,7 @@ export default function SignIn() {
                         </div>  
                         <div>
                             <Label value='Your password'/>
-                            <TextInput type='password' placeholder='************' id='password' onChange={handleChange}/>
+                            <TextInput type='password' placeholder='************' id='password' onChange={handleChange} autoComplete='none'/>
                         </div>
                         <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}> 
                         {
