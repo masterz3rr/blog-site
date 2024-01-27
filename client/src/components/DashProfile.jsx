@@ -11,7 +11,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
 export default function DashProfile() {
-    const { currentUser, error } = useSelector(state => state.user)
+    const { currentUser, error, loading } = useSelector(state => state.user)
     const [imageFile, setImageFile] = useState(null);
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0);
@@ -121,7 +121,7 @@ export default function DashProfile() {
             const res = await fetch(`/api/user/delete/${currentUser._id}`, {
                 method: 'DELETE',
             });
-            const data = await res.json();console.log(data)
+            const data = await res.json(); console.log(data)
             if (!res.ok) {
                 dispatch(deleteUserFailure(data.message))
             } else {
@@ -139,12 +139,12 @@ export default function DashProfile() {
             });
             const data = await res.json();
 
-            if(!res.ok){
+            if (!res.ok) {
                 console.log(data.message);
             } else {
                 dispatch(signOutSuccess());
             }
-        } catch(error) {
+        } catch (error) {
             console.log(error.message);
         }
     }
@@ -185,17 +185,24 @@ export default function DashProfile() {
                 <TextInput type='text' id='username' placeholder='Username' defaultValue={currentUser.username} onChange={handleChange} />
                 <TextInput type='email' id='email' placeholder='Email' defaultValue={currentUser.email} onChange={handleChange} />
                 <TextInput type='password' id='password' placeholder='Password' onChange={handleChange} />
-                <Button type='submit' gradientDuoTone='purpleToBlue' outline>Update</Button>
+                <Button
+                    type='submit'
+                    gradientDuoTone='purpleToBlue'
+                    outline
+                    disabled={loading || imageFileUploading}
+                >
+                    { loading ? 'loading...' : 'Update' }
+                </Button>
                 {
                     currentUser.isAdmin && (
-                        <Link>
-                            <Button 
-                            type="button"
-                            gradientDuoTone='purpleToPink'
-                            className='w-full'>
+                        <Link to={'/create-post'}>
+                            <Button
+                                type="button"
+                                gradientDuoTone='purpleToPink'
+                                className='w-full'>
                                 Create A Post
                             </Button>
-                            
+
                         </Link>
                     )
                 }
